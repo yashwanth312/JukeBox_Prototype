@@ -1,9 +1,8 @@
-import { React, useState } from 'react';
+import { React } from 'react';
 
 
 function MetaMaskConnect (props) {
 
-    const [address, setaddress] = useState();
 
     async function connectWallet() {
         if (window.ethereum) {
@@ -16,12 +15,10 @@ function MetaMaskConnect (props) {
                 console.error(err);
               }
             });
-          setaddress(accounts[0]);
-          console.log(accounts[0])
           if (accounts[0]) {
             console.log("We have an account");
             props.setconnected(true);
-            props.setuser(address);
+            props.setuser(accounts[0]);
           }
         } else {
           console.error("No web3 provider detected");

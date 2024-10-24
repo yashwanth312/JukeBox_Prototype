@@ -3,35 +3,30 @@ import './App.css';
 import {React, useState} from 'react';
 import MetaMaskConnect from './MetaMaskConnect';
 import Preferences from './Preferences';
-import contractTransactABI from "./abi.json";
-import Web3 from 'web3';
 
 
 
 function App() {
 
-  const contractAddress = "0x68e06052d591E7b1aff8385eA40952aD765cFE02";
-
   const [connected, setconnected] = useState(false)
   const [user, setuser] = useState()
-  const amount = "0.0065"
 
-  async function Transact () {
-    let web3 = new Web3(window.ethereum);
-    let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
-    const totalAmount = web3.utils.toWei(amount, 'ether');
-    console.log(totalAmount)
+  // async function Transact () {
+  //   let web3 = new Web3(window.ethereum);
+  //   let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
+  //   const totalAmount = web3.utils.toWei(amount, 'ether');
+  //   console.log(totalAmount)
     
-     const gasPrice = await web3.eth.getGasPrice();
-     console.log(gasPrice)
-    // Estimate the gas limit for the transaction
-    // const gasLimit = await contract.methods.purchase("Blinding Lights", "Blue", "Vodka").estimateGas({ from: "0x14ba14600a148f8A1bCACD68210af6dB888B671e", value: totalAmount });
-    // console.log(gasLimit)
-    // Calculate the total gas cost in ETH
-    // const totalGasCost = web3.utils.fromWei((gasPrice * gasLimit).toString(), 'ether');
-    //  console.log(gasPrice, gasLimit, totalGasCost)
-    await contract.methods.sendRequest(208, ["1", "1"]).send({ from: "0x7896474a3dEC193C69937b0CB37Ba7cc58b13CE4", value: totalAmount })
-  }
+  //    const gasPrice = await web3.eth.getGasPrice();
+  //    console.log(gasPrice)
+  //   // Estimate the gas limit for the transaction
+  //   // const gasLimit = await contract.methods.purchase("Blinding Lights", "Blue", "Vodka").estimateGas({ from: "0x14ba14600a148f8A1bCACD68210af6dB888B671e", value: totalAmount });
+  //   // console.log(gasLimit)
+  //   // Calculate the total gas cost in ETH
+  //   // const totalGasCost = web3.utils.fromWei((gasPrice * gasLimit).toString(), 'ether');
+  //   //  console.log(gasPrice, gasLimit, totalGasCost)
+  //   await contract.methods.sendRequest(208, ["1", "1"]).send({ from: "0x7896474a3dEC193C69937b0CB37Ba7cc58b13CE4", value: totalAmount })
+  // }
 
   // async function createTweet(content) {
   //   const accounts = await web3.eth.getAccounts();
@@ -48,9 +43,8 @@ function App() {
       <h1>Welcome</h1>
       {connected?(
         <div>
-          <h3>{user}</h3>
+          <b>{user}</b>
           <Preferences />
-          <button onClick={Transact}>Transact</button>
         </div>
       ):(
         <MetaMaskConnect setconnected={setconnected} setuser={setuser}/>
