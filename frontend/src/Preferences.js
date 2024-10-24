@@ -1,129 +1,153 @@
-import {React} from 'react';
+import { React } from "react";
 import { useFormik } from "formik";
-import Web3 from 'web3';
+import Web3 from "web3";
 import contractTransactABI from "./abi.json";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 
-function Preferences () {
+function Preferences() {
+  const prices = {
+    song: 0.0005,
+    color: 0.0002,
+    drink: 0.001,
+  };
 
-    const prices = {
-        song: 0.0005,
-        color: 0.0002,
-        drink: 0.001,
-      };
+  const contractAddress = "0x68e06052d591E7b1aff8385eA40952aD765cFE02";
 
-    const contractAddress = "0x68e06052d591E7b1aff8385eA40952aD765cFE02";
+  const calculateTotal = () => {
+    const total =
+      (formik.values.song !== "" ? prices.song : 0) +
+      (formik.values.color !== "" ? prices.color : 0) +
+      (formik.values.drink !== "" ? prices.drink : 0);
 
-    const calculateTotal = () => {
-        return (
-          (formik.values.song ? prices.song : 0) +
-          (formik.values.color ? prices.color : 0) +
-          (formik.values.drink ? prices.drink : 0)
-        );
-    };
+    // Round to 6 decimal places to avoid floating-point issues
+    return parseFloat(total.toFixed(6));
+  };
 
-    const formik = useFormik({
-        initialValues: {
-          song: '',  // Initially no song selected
-          color: '', // Initially no color selected
-          drink: '', // Initially no drink selected
-        },
-        onSubmit: (values) => {
-          // Calculate total price based on the number of items selected
-          const total =
-            (values.song ? prices.song : 0) +
-            (values.color ? prices.color : 0) +
-            (values.drink ? prices.drink : 0);
+  const formik = useFormik({
+    initialValues: {
+      song: "", // Initially no song selected
+      color: "", // Initially no color selected
+      drink: "", // Initially no drink selected
+    },
+    onSubmit: (values) => {
+      // Calculate total price based on the number of items selected
+      const total =
+        (values.song !== "" ? prices.song : 0) +
+        (values.color !== "" ? prices.color : 0) +
+        (values.drink !== "" ? prices.drink : 0);
 
-            Transact(total)
-            
-          // Generate dynamic URL
-        //   const dynamicURL = `https://www.localhost.com/success?s=${values.song}&l=${values.color}&d=${values.drink}`;
-          
-          // For now, we will just alert the URL. In practice, you can redirect or display it
-        //   alert(`Total price: ${total} ETH \nDynamic URL: ${dynamicURL}`);
-        // console.log(prices.drink)
-        },
+      Transact(total);
+    },
+  });
+
+  async function Transact(amount) {
+    let web3 = new Web3(window.ethereum);
+    let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
+    const totalAmount = web3.utils.toWei(amount.toString(), "ether");
+    console.log(totalAmount);
+
+    // Get selected song, color, and drink from form values
+    const selectedSong = formik.values.song || "N/A"; // default to "N/A" if not selected
+    const selectedColor = formik.values.color || "N/A"; // default to "N/A" if not selected
+    const selectedDrink = formik.values.drink || "N/A"; // default to "N/A" if not selected
+    console.log(selectedSong);
+    // Pass the selected song, color, and drink to the smart contract
+    await contract.methods
+      .sendRequest(208, [selectedSong, selectedColor, selectedDrink])
+      .send({
+        from: "0x7896474a3dEC193C69937b0CB37Ba7cc58b13CE4",
+        value: totalAmount,
       });
+  }
 
-      async function Transact (amount) {
-        let web3 = new Web3(window.ethereum);
-        let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
-        const totalAmount = web3.utils.toWei(amount, 'ether');
-        console.log(totalAmount)
-        
-        //  const gasPrice = await web3.eth.getGasPrice();
-        //  console.log(gasPrice)
-        // Estimate the gas limit for the transaction
-        // const gasLimit = await contract.methods.purchase("Blinding Lights", "Blue", "Vodka").estimateGas({ from: "0x14ba14600a148f8A1bCACD68210af6dB888B671e", value: totalAmount });
-        // console.log(gasLimit)
-        // Calculate the total gas cost in ETH
-        // const totalGasCost = web3.utils.fromWei((gasPrice * gasLimit).toString(), 'ether');
-        //  console.log(gasPrice, gasLimit, totalGasCost)
-        await contract.methods.sendRequest(208, ["1", "1"]).send({ from: "0x7896474a3dEC193C69937b0CB37Ba7cc58b13CE4", value: totalAmount })
-      }
-
-    return (
-        <div>
-      <h2>Choose a Song, Color, and Drink</h2>
+  return (
+    <Box sx={{ maxWidth: 400, margin: "0 auto", padding: 2 }}>
+      <Typography variant="h5" gutterBottom align="center">
+        Choose a Song, Color, and Drink
+      </Typography>
       <form onSubmit={formik.handleSubmit}>
         {/* Song Dropdown */}
-        <div>
-          <label htmlFor="song">Song (0.0005 ETH):</label>
-          <select
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel id="song-label">Song (0.0005 ETH)</InputLabel>
+          <Select
+            labelId="song-label"
             id="song"
             name="song"
-            onChange={formik.handleChange}
             value={formik.values.song}
+            onChange={formik.handleChange}
+            label="Song (0.0005 ETH)"
           >
-            <option value="">Select a song</option>
-            <option value="song1">Song 1</option>
-            <option value="song2">Song 2</option>
-            <option value="song3">Song 3</option>
-          </select>
-        </div>
+            <MenuItem value="">
+              <em>Select a song</em>
+            </MenuItem>
+            <MenuItem value="Blinding Lights">Blinding Lights</MenuItem>
+            <MenuItem value="Formula1">Formula1</MenuItem>
+            <MenuItem value="song3">Skyfall</MenuItem>
+          </Select>
+        </FormControl>
 
         {/* Color Dropdown */}
-        <div>
-          <label htmlFor="color">Color (0.0002 ETH):</label>
-          <select
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel id="color-label">Color (0.0002 ETH)</InputLabel>
+          <Select
+            labelId="color-label"
             id="color"
             name="color"
-            onChange={formik.handleChange}
             value={formik.values.color}
+            onChange={formik.handleChange}
+            label="Color (0.0002 ETH)"
           >
-            <option value="">Select a color</option>
-            <option value="red">Red</option>
-            <option value="green">Green</option>
-            <option value="blue">Blue</option>
-          </select>
-        </div>
+            <MenuItem value="">
+              <em>Select a color</em>
+            </MenuItem>
+            <MenuItem value="red">Red</MenuItem>
+            <MenuItem value="green">Green</MenuItem>
+            <MenuItem value="blue">Blue</MenuItem>
+          </Select>
+        </FormControl>
 
         {/* Drink Dropdown */}
-        <div>
-          <label htmlFor="drink">Drink (0.001 ETH):</label>
-          <select
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel id="drink-label">Drink (0.001 ETH)</InputLabel>
+          <Select
+            labelId="drink-label"
             id="drink"
             name="drink"
-            onChange={formik.handleChange}
             value={formik.values.drink}
+            onChange={formik.handleChange}
+            label="Drink (0.001 ETH)"
           >
-            <option value="">Select a drink</option>
-            <option value="coffee">Coffee</option>
-            <option value="tea">Tea</option>
-            <option value="juice">Juice</option>
-          </select>
-        </div>
+            <MenuItem value="">
+              <em>Select a drink</em>
+            </MenuItem>
+            <MenuItem value="Coke">Coke</MenuItem>
+            <MenuItem value="Vodka">Vodka</MenuItem>
+            <MenuItem value="Gin">Gin</MenuItem>
+          </Select>
+        </FormControl>
 
         {/* Display total price */}
-        <div>
-          <h3>Total Price: {calculateTotal()} ETH</h3>
-        </div>
+        <Typography variant="h6" gutterBottom align="center">
+          Total Price: {calculateTotal()} ETH
+        </Typography>
 
         {/* Submit button */}
-        <button type="submit">Preview</button>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <Button variant="contained" color="primary" type="submit">
+            Transfer
+          </Button>
+        </Box>
       </form>
-    </div>
-    )
+    </Box>
+  );
 }
 
 export default Preferences;
