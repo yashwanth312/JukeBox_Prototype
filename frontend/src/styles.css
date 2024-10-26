@@ -1,0 +1,171 @@
+/* Funky Fun Gradient Theme CSS */
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica', Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    position: relative; 
+    background-image: 
+        linear-gradient(to bottom, #00b8a9, #f8f3d4), /* Teal-to-cream gradient */
+        url('./images/Streaks Left.png'),
+        url('./images/Streaks Right.png'),
+        url('./images/block network.png'),
+        url('./images/Jukebox.png'),
+        url('./images/VibeBox Logo.png');
+     /* Image layer on top */
+    background-size: 100% 100%, auto; /* Gradient covers full, image auto-sized */
+    background-repeat: no-repeat; /* Ensures image doesn’t repeat */
+    background-position: right top; /* Positions image to the top right */
+    color: #33425b; /* Dark blue text color for all body text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+.top-right-image {
+    position: absolute;
+    top: 250px;
+    right: 1200px;
+    width: 490px; /* Adjust width as necessary */
+    z-index: 0;
+    opacity: 0.8; /* Optional for transparency */
+}
+
+.top-left-image {
+    position: absolute;
+    top: 250px;
+    width: 490px; 
+    left: 1200px;
+    z-index: 0;
+    opacity: 0.8; 
+}
+
+.box-image {
+    position: absolute;
+    bottom: 0;            /* Positions the image at the bottom of the page */
+    left: 50%;            /* Centers the image horizontally */
+    transform: translateX(-50%);  /* Adjusts the image position to truly center it */
+    width: 400px;         /* Adjust width as needed */
+    height: 200px;        /* You can adjust this as needed */
+    z-index: 1;           /* Ensures it stays above other content if needed */
+    opacity: 0.8;         /* Optional for slight transparency */
+    /* Removed top: 580px; */
+}
+
+
+.judeleft-image {
+    position: absolute;      /* Allows positioning relative to the closest positioned ancestor */
+    bottom: 0;               /* Positions the image at the bottom of the page */
+    left: 0;                 /* Positions the image to the left edge of the page */
+    width: 150px;            /* Adjust width as needed */
+    height: auto;            /* Maintains aspect ratio */
+    z-index: 1;              /* Ensures it stays above other content if needed */
+    opacity: 0.8;            /* Optional for slight transparency */
+}
+
+.juderight-image{
+    position: absolute;      /* Allows positioning relative to the closest positioned ancestor */
+    bottom: 0;               /* Positions the image at the bottom of the page */
+    right: 0;                 /* Positions the image to the left edge of the page */
+    width: 150px;            /* Adjust width as needed */
+    height: auto;            /* Maintains aspect ratio */
+    z-index: 1;              /* Ensures it stays above other content if needed */
+    opacity: 0.8;  
+}
+
+.vibebox-image {
+    position: absolute;      /* Allows positioning relative to the closest positioned ancestor */
+    top: 30px;                  /* Positions the image at the top of the page */
+    left: 50%;               /* Centers the image horizontally */
+    transform: translateX(-50%); /* Adjusts the image position to truly center it */
+    width: 200px;            /* Adjust width as needed */
+    height: auto;            /* Maintains aspect ratio */
+    z-index: 1;              /* Ensures it stays above other content if needed */
+    opacity: 0.8;            /* Optional for slight transparency */
+}
+
+/* Custom Container for App */
+.custom-container {
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    background-color: #f8f3d4; /* Cream background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Typography */
+.custom-heading {
+    color: #33425b; /* Dark blue */
+    margin-bottom: 0.5em;
+}
+
+.custom-highlight {
+    background-color: #d8e9f0; /* Light blue */
+    color: #33425b; /* Dark blue */
+    padding: 3px 5px;
+    border-radius: 3px;
+}
+
+/* Universal Highlighting */
+::selection {
+    background-color: #d8e9f0; /* Light blue */
+    color: #33425b; /* Dark blue text */
+}
+
+/* Buttons */
+.custom-button {
+    background-color: #d8e9f0; /* Light blue */
+    color: #33425b; /* Dark blue */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-button:hover {
+    background-color: #33425b; /* Dark blue */
+    color: #d8e9f0; /* Light blue text */
+}
+
+/* Links */
+a {
+    color: #00b8a9; /* Teal */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #33425b; /* Dark blue */
+}
+
+h1, h2, h3 {
+    color: #33425b; /* Dark blue */
+    margin-bottom: 0.5em;
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.5em;
+    border-bottom: 2px solid #d8e9f0; /* Light blue border */
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.5em;
+}

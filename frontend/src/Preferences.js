@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import Web3 from "web3";
 import contractTransactABI from "./abi.json";
@@ -11,6 +11,14 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import "./styles.css"; // Import the CSS file here
+
+// Import image if located in the src directory
+import removedBgImage from "./images/Streaks Left.png"; // Uncomment if the image is in the src folder
+import removedright from "./images/Streaks Right.png";
+import boxes from "./images/block network.png";
+import judebox from "./images/Jukebox.png";
+import vibebox from "./images/VibeBox Logo.png";
 
 function Preferences() {
   const prices = {
@@ -19,62 +27,73 @@ function Preferences() {
     drink: 0.001,
   };
 
-  const contractAddress = "0x68e06052d591E7b1aff8385eA40952aD765cFE02";
+  const contractAddress = "0x28Df1348846D8C14A26B309E820c53e7dCcD00D6";
 
   const calculateTotal = () => {
-    const total =
+    return (
       (formik.values.song !== "" ? prices.song : 0) +
       (formik.values.color !== "" ? prices.color : 0) +
-      (formik.values.drink !== "" ? prices.drink : 0);
-
-    // Round to 6 decimal places to avoid floating-point issues
-    return parseFloat(total.toFixed(6));
+      (formik.values.drink !== "" ? prices.drink : 0)
+    ).toFixed(6);
   };
 
   const formik = useFormik({
     initialValues: {
-      song: "", // Initially no song selected
-      color: "", // Initially no color selected
-      drink: "", // Initially no drink selected
+      song: "",
+      color: "",
+      drink: "",
     },
     onSubmit: (values) => {
-      // Calculate total price based on the number of items selected
-      const total =
-        (values.song !== "" ? prices.song : 0) +
-        (values.color !== "" ? prices.color : 0) +
-        (values.drink !== "" ? prices.drink : 0);
-
+      const total = calculateTotal();
       Transact(total);
     },
   });
 
   async function Transact(amount) {
-    let web3 = new Web3(window.ethereum);
-    let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
-    const totalAmount = web3.utils.toWei(amount.toString(), "ether");
-    console.log(totalAmount);
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const selectedAccount = accounts[0];
 
-    // Get selected song, color, and drink from form values
-    const selectedSong = formik.values.song || "N/A"; // default to "N/A" if not selected
-    const selectedColor = formik.values.color || "N/A"; // default to "N/A" if not selected
-    const selectedDrink = formik.values.drink || "N/A"; // default to "N/A" if not selected
-    console.log(selectedSong);
-    // Pass the selected song, color, and drink to the smart contract
-    await contract.methods
-      .sendRequest(208, [selectedSong, selectedColor, selectedDrink])
-      .send({
-        from: "0x7896474a3dEC193C69937b0CB37Ba7cc58b13CE4",
-        value: totalAmount,
-      });
+        const web3 = new Web3(window.ethereum);
+        const contract = new web3.eth.Contract(
+          contractTransactABI,
+          contractAddress
+        );
+        const totalAmount = web3.utils.toWei(amount.toString(), "ether");
+
+        const { song, color, drink } = formik.values;
+        await contract.methods
+          .sendRequest(208, [song || "N/A", color || "N/A", drink || "N/A"])
+          .send({
+            from: selectedAccount,
+            value: totalAmount,
+          });
+
+        console.log("Transaction successful!");
+      } catch (error) {
+        console.error("Transaction failed:", error);
+      }
+    } else {
+      alert("Please install MetaMask to use this feature.");
+    }
   }
 
   return (
-    <Box sx={{ maxWidth: 400, margin: "0 auto", padding: 2 }}>
-      <Typography variant="h5" gutterBottom align="center">
+    <Box className="custom-container">
+      {/* Add the image */}
+      <img src={removedBgImage} alt="Background" className="top-right-image" />
+      <img src={removedright} alt="Background" className="top-left-image" />
+      <img src={boxes} alt="Bottom Image" className="box-image" />
+      <img src={judebox} alt="Bottom Image" className="judeleft-image" />
+      <img src={judebox} alt="Bottom Image" className="juderight-image" />
+      <img src={vibebox} alt="Bottom Image" className="vibebox-image" />
+      <Typography variant="h5" className="custom-heading" gutterBottom>
         Choose a Song, Color, and Drink
       </Typography>
       <form onSubmit={formik.handleSubmit}>
-        {/* Song Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="song-label">Song (0.0005 ETH)</InputLabel>
           <Select
@@ -90,11 +109,10 @@ function Preferences() {
             </MenuItem>
             <MenuItem value="Blinding Lights">Blinding Lights</MenuItem>
             <MenuItem value="Formula1">Formula1</MenuItem>
-            <MenuItem value="song3">Skyfall</MenuItem>
+            <MenuItem value="Skyfall">Skyfall</MenuItem>
           </Select>
         </FormControl>
 
-        {/* Color Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="color-label">Color (0.0002 ETH)</InputLabel>
           <Select
@@ -114,7 +132,6 @@ function Preferences() {
           </Select>
         </FormControl>
 
-        {/* Drink Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="drink-label">Drink (0.001 ETH)</InputLabel>
           <Select
@@ -134,14 +151,12 @@ function Preferences() {
           </Select>
         </FormControl>
 
-        {/* Display total price */}
-        <Typography variant="h6" gutterBottom align="center">
+        <Typography variant="h6" className="custom-highlight" gutterBottom>
           Total Price: {calculateTotal()} ETH
         </Typography>
 
-        {/* Submit button */}
         <Box display="flex" justifyContent="center" mt={2}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" className="custom-button" type="submit">
             Transfer
           </Button>
         </Box>
