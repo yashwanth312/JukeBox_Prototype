@@ -12,14 +12,14 @@ import {
   Typography,
 } from "@mui/material";
 
-function Preferences() {
+function Preferences(props) {
   const prices = {
     song: 0.0005,
     color: 0.0002,
     drink: 0.001,
   };
 
-  const contractAddress = "0x68e06052d591E7b1aff8385eA40952aD765cFE02";
+  const contractAddress = "0x10023E15676d80048Cb0Ae25117ff5C803551F75";
 
   const calculateTotal = () => {
     const total =
@@ -49,22 +49,47 @@ function Preferences() {
   });
 
   async function Transact(amount) {
+
+    // const inputObj = {
+    //   song: "Blinding Lights",
+    //   lights: "Blue",
+    //   drinks: "Vodka"
+    // };
+
+    console.log(contractTransactABI)
+
+    // const args = [inputObj.song, inputObj.lights, inputObj.drinks];
     let web3 = new Web3(window.ethereum);
     let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
-    const totalAmount = web3.utils.toWei(amount.toString(), "ether");
-    console.log(totalAmount);
+    const amountWei = web3.utils.toWei(amount.toString(), "ether");
+
+    console.log("Amount: " + amount)
+    console.log("Amount Eth: " + amountWei)
+
+    // console.log(props.userAddress)
+    // const gasPrice = await web3.eth.getGasPrice();
+
+    // const gasLimit = await contract.methods.sendRequest(["Blinding Lights", "Blue", "Vodka"]).estimateGas({ from: props.userAddress, value: amountWei });
+    // const totalGasCost = gasPrice * gasLimit
+    // // const totalGasCost = web3.utils.fromWei((gasPrice * gasLimit).toString(), 'ether');
+    // const totalPrice = totalGasCost + amountWei
+
+
+    
+    // const totalPriceWei = web3.utils.toWei(totalPrice.toString(), "ether");
 
     // Get selected song, color, and drink from form values
     const selectedSong = formik.values.song || "N/A"; // default to "N/A" if not selected
     const selectedColor = formik.values.color || "N/A"; // default to "N/A" if not selected
     const selectedDrink = formik.values.drink || "N/A"; // default to "N/A" if not selected
-    console.log(selectedSong);
-    // Pass the selected song, color, and drink to the smart contract
+
+    console.log([selectedSong, selectedColor, selectedDrink])
+
     await contract.methods
-      .sendRequest(208, [selectedSong, selectedColor, selectedDrink])
+      .sendRequest([selectedSong, selectedColor, selectedDrink])
       .send({
-        from: "0x7896474a3dEC193C69937b0CB37Ba7cc58b13CE4",
-        value: totalAmount,
+        from: props.userAddress,
+        value: amountWei,
       });
   }
 

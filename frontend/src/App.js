@@ -45,7 +45,7 @@ function App() {
           <Typography variant="h5" align="center" gutterBottom>
             {user}
           </Typography>
-          <Preferences />
+          <Preferences userAddress={user}/>
         </div>
       ) : (
         <MetaMaskConnect setconnected={setconnected} setuser={setuser} />
