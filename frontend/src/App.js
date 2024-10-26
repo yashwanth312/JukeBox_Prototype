@@ -1,22 +1,19 @@
-
-import './App.css';
-import {React, useState} from 'react';
-import MetaMaskConnect from './MetaMaskConnect';
-import Preferences from './Preferences';
-
-
+import "./App.css";
+import { React, useState } from "react";
+import MetaMaskConnect from "./MetaMaskConnect";
+import Preferences from "./Preferences";
+import { Typography, Box } from "@mui/material";
 
 function App() {
-
-  const [connected, setconnected] = useState(false)
-  const [user, setuser] = useState()
+  const [connected, setconnected] = useState(false);
+  const [user, setuser] = useState();
 
   // async function Transact () {
   //   let web3 = new Web3(window.ethereum);
   //   let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
   //   const totalAmount = web3.utils.toWei(amount, 'ether');
   //   console.log(totalAmount)
-    
+
   //    const gasPrice = await web3.eth.getGasPrice();
   //    console.log(gasPrice)
   //   // Estimate the gas limit for the transaction
@@ -40,18 +37,21 @@ function App() {
 
   return (
     <div>
-      <h1>Welcome</h1>
-      {connected?(
+      <Typography variant="h5" align="center" gutterBottom>
+        Welcome
+      </Typography>
+      {connected ? (
         <div>
-          <b>{user}</b>
-          <Preferences />
+          <Typography variant="h5" align="center" gutterBottom>
+            {user}
+          </Typography>
+          <Preferences userAddress={user}/>
         </div>
-      ):(
-        <MetaMaskConnect setconnected={setconnected} setuser={setuser}/>
+      ) : (
+        <MetaMaskConnect setconnected={setconnected} setuser={setuser} />
       )}
     </div>
   );
 }
-
 
 export default App;
