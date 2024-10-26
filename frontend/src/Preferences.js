@@ -20,14 +20,14 @@ import boxes from "./images/block network.png";
 import judebox from "./images/Jukebox.png";
 import vibebox from "./images/VibeBox Logo.png";
 
-function Preferences() {
+function Preferences(props) {
   const prices = {
     song: 0.0005,
     color: 0.0002,
     drink: 0.001,
   };
 
-  const contractAddress = "0x28Df1348846D8C14A26B309E820c53e7dCcD00D6";
+  const contractAddress = "0x10023E15676d80048Cb0Ae25117ff5C803551F75";
 
   const calculateTotal = () => {
     return (
@@ -50,35 +50,45 @@ function Preferences() {
   });
 
   async function Transact(amount) {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const selectedAccount = accounts[0];
+    // const inputObj = {
+    //   song: "Blinding Lights",
+    //   lights: "Blue",
+    //   drinks: "Vodka"
+    // };
 
-        const web3 = new Web3(window.ethereum);
-        const contract = new web3.eth.Contract(
-          contractTransactABI,
-          contractAddress
-        );
-        const totalAmount = web3.utils.toWei(amount.toString(), "ether");
+    console.log(contractTransactABI);
 
-        const { song, color, drink } = formik.values;
-        await contract.methods
-          .sendRequest(208, [song || "N/A", color || "N/A", drink || "N/A"])
-          .send({
-            from: selectedAccount,
-            value: totalAmount,
-          });
+    // const args = [inputObj.song, inputObj.lights, inputObj.drinks];
+    let web3 = new Web3(window.ethereum);
+    let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
+    const amountWei = web3.utils.toWei(amount.toString(), "ether");
 
-        console.log("Transaction successful!");
-      } catch (error) {
-        console.error("Transaction failed:", error);
-      }
-    } else {
-      alert("Please install MetaMask to use this feature.");
-    }
+    console.log("Amount: " + amount);
+    console.log("Amount Eth: " + amountWei);
+
+    // console.log(props.userAddress)
+    // const gasPrice = await web3.eth.getGasPrice();
+
+    // const gasLimit = await contract.methods.sendRequest(["Blinding Lights", "Blue", "Vodka"]).estimateGas({ from: props.userAddress, value: amountWei });
+    // const totalGasCost = gasPrice * gasLimit
+    // // const totalGasCost = web3.utils.fromWei((gasPrice * gasLimit).toString(), 'ether');
+    // const totalPrice = totalGasCost + amountWei
+
+    // const totalPriceWei = web3.utils.toWei(totalPrice.toString(), "ether");
+
+    // Get selected song, color, and drink from form values
+    const selectedSong = formik.values.song || "N/A"; // default to "N/A" if not selected
+    const selectedColor = formik.values.color || "N/A"; // default to "N/A" if not selected
+    const selectedDrink = formik.values.drink || "N/A"; // default to "N/A" if not selected
+
+    console.log([selectedSong, selectedColor, selectedDrink]);
+
+    await contract.methods
+      .sendRequest([selectedSong, selectedColor, selectedDrink])
+      .send({
+        from: props.userAddress,
+        value: amountWei,
+      });
   }
 
   return (

@@ -27,7 +27,7 @@ function App() {
 
       {/* Conditional rendering for preferences or MetaMask connection */}
       {connected ? (
-        <Preferences />
+        <Preferences userAddress={user} />
       ) : (
         <MetaMaskConnect setconnected={setconnected} setuser={setuser} />
       )}
