@@ -117,9 +117,9 @@ function Preferences(props) {
             label="Song (0.0005 ETH)"
           >
 
-            <MenuItem value="pv">Purple Vibes</MenuItem>
-            <MenuItem value="il">Inferno of Love</MenuItem>
-            <MenuItem value="bw">Blue Waves</MenuItem>
+            <MenuItem value="sb">Emerld</MenuItem>
+            <MenuItem value="il">Ruby</MenuItem>
+            <MenuItem value="bw">Sapphire</MenuItem>
 
           </Select>
         </FormControl>
