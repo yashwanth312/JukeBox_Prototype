@@ -13,12 +13,14 @@ import {
 } from "@mui/material";
 import "./styles.css"; // Import the CSS file here
 
+
 // Import image if located in the src directory
 import removedBgImage from "./images/Streaks Left.png"; // Uncomment if the image is in the src folder
 import removedright from "./images/Streaks Right.png";
 import boxes from "./images/block network.png";
 import judebox from "./images/Jukebox.png";
 import vibebox from "./images/VibeBox Logo.png";
+
 
 function Preferences(props) {
   const prices = {
@@ -50,21 +52,18 @@ function Preferences(props) {
   });
 
   async function Transact(amount) {
+
     // const inputObj = {
     //   song: "Blinding Lights",
     //   lights: "Blue",
     //   drinks: "Vodka"
     // };
 
-    console.log(contractTransactABI);
-
     // const args = [inputObj.song, inputObj.lights, inputObj.drinks];
     let web3 = new Web3(window.ethereum);
     let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
     const amountWei = web3.utils.toWei(amount.toString(), "ether");
 
-    console.log("Amount: " + amount);
-    console.log("Amount Eth: " + amountWei);
 
     // console.log(props.userAddress)
     // const gasPrice = await web3.eth.getGasPrice();
@@ -74,6 +73,7 @@ function Preferences(props) {
     // // const totalGasCost = web3.utils.fromWei((gasPrice * gasLimit).toString(), 'ether');
     // const totalPrice = totalGasCost + amountWei
 
+
     // const totalPriceWei = web3.utils.toWei(totalPrice.toString(), "ether");
 
     // Get selected song, color, and drink from form values
@@ -81,7 +81,6 @@ function Preferences(props) {
     const selectedColor = formik.values.color || "N/A"; // default to "N/A" if not selected
     const selectedDrink = formik.values.drink || "N/A"; // default to "N/A" if not selected
 
-    console.log([selectedSong, selectedColor, selectedDrink]);
 
     await contract.methods
       .sendRequest([selectedSong, selectedColor, selectedDrink])
