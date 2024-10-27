@@ -1,49 +1,26 @@
 from flask import Flask, jsonify, request
 import requests
 import pygame
+import time
 
 # Initialize the Flask application
 app = Flask(__name__)
 
-external_url_red = "http://192.168.1.160//?m=1&o=1"
-external_url_green = "http://192.168.1.160//?m=1&o=1"
-external_url_blue = "http://192.168.1.160//?m=1&o=1"
-def MusicPlayer(song) :
-    print(song)
+
+def MusicPlayer(song, url) :
     pygame.mixer.init()
-    if song == "Blinding Lights":
-        song_path = "./Music/bl.mp3"
     if song == "bw" : 
         song_path = "./Music/BW.mp3"
-    if song == "ep":
-        song_path = "./Music/EP.mp3"
     if song == "il":
         song_path = "./Music/IL.mp3"
     if song == "pv":
         song_path = "./Music/PV.mp3"
-    if song == "sb":
-        song_path = "./Music/SB.mp3"
 
-    print(song_path)
-
+    requests.get(url)
     pygame.mixer.music.load(song_path)
     pygame.mixer.music.play()
-
-def Lights(color):
-    if color == "Red" :
-        requests.get(external_url_red)
-    if color == "Green" :
-        requests.get(external_url_green)
-    if color == "Blue" :
-        requests.get(external_url_blue)
-
-def Drinks(drink):
-    if drink == "Coke":
-        print("Coke")
-    if drink == "Vodka":
-        print("Vodka")
-    if drink == "Gin":
-        print("Gin")
+    time.sleep(30)
+    requests.get(url)
 
 
 # Define a route for the URL
@@ -51,22 +28,20 @@ def Drinks(drink):
 def success():
 
     s_value = request.args.get('s')
-    l_value = request.args.get('l')
-    d_value = request.args.get('d')
 
     response_data = []
 
-    if s_value : 
-        MusicPlayer(s_value)
-        response_data.append("Processed Music")
+    if s_value == "bw":
+        external_url = "http://172.28.140.131?m=1&o=1"
+    if s_value == "il":
+        external_url = "http://172.28.140.132?m=1&o=1"
+    if s_value == "pv":
+        external_url = "http://172.28.140.15?m=1&o=1"
 
-    if l_value : 
-        Lights(l_value)
-        response_data.append("Processed Lights")
-    
-    if d_value:
-        Drinks(d_value)
-        response_data.append("Processed Drinks")
+
+    if s_value : 
+        MusicPlayer(s_value, external_url)
+        response_data.append("Processed")
 
     # song_path = "./Music/bl.mp3"
     # pygame.mixer.init()
@@ -131,7 +106,6 @@ def success():
 
     # Return the combined results
     return jsonify({
-        "message": "Processed the request",
         "result": response_data
     }), 200
 
