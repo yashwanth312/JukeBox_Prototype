@@ -1,4 +1,4 @@
-import { React } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import Web3 from "web3";
 import contractTransactABI from "./abi.json";
@@ -11,6 +11,16 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import "./styles.css"; // Import the CSS file here
+
+
+// Import image if located in the src directory
+import removedBgImage from "./images/Streaks Left.png"; // Uncomment if the image is in the src folder
+import removedright from "./images/Streaks Right.png";
+import boxes from "./images/block network.png";
+import judebox from "./images/Jukebox.png";
+import vibebox from "./images/VibeBox Logo.png";
+
 
 function Preferences(props) {
   const prices = {
@@ -22,28 +32,21 @@ function Preferences(props) {
   const contractAddress = "0x10023E15676d80048Cb0Ae25117ff5C803551F75";
 
   const calculateTotal = () => {
-    const total =
+    return (
       (formik.values.song !== "" ? prices.song : 0) +
       (formik.values.color !== "" ? prices.color : 0) +
-      (formik.values.drink !== "" ? prices.drink : 0);
-
-    // Round to 6 decimal places to avoid floating-point issues
-    return parseFloat(total.toFixed(6));
+      (formik.values.drink !== "" ? prices.drink : 0)
+    ).toFixed(6);
   };
 
   const formik = useFormik({
     initialValues: {
-      song: "", // Initially no song selected
-      color: "", // Initially no color selected
-      drink: "", // Initially no drink selected
+      song: "",
+      color: "",
+      drink: "",
     },
     onSubmit: (values) => {
-      // Calculate total price based on the number of items selected
-      const total =
-        (values.song !== "" ? prices.song : 0) +
-        (values.color !== "" ? prices.color : 0) +
-        (values.drink !== "" ? prices.drink : 0);
-
+      const total = calculateTotal();
       Transact(total);
     },
   });
@@ -56,15 +59,11 @@ function Preferences(props) {
     //   drinks: "Vodka"
     // };
 
-    console.log(contractTransactABI)
-
     // const args = [inputObj.song, inputObj.lights, inputObj.drinks];
     let web3 = new Web3(window.ethereum);
     let contract = new web3.eth.Contract(contractTransactABI, contractAddress);
     const amountWei = web3.utils.toWei(amount.toString(), "ether");
 
-    console.log("Amount: " + amount)
-    console.log("Amount Eth: " + amountWei)
 
     // console.log(props.userAddress)
     // const gasPrice = await web3.eth.getGasPrice();
@@ -75,7 +74,6 @@ function Preferences(props) {
     // const totalPrice = totalGasCost + amountWei
 
 
-    
     // const totalPriceWei = web3.utils.toWei(totalPrice.toString(), "ether");
 
     // Get selected song, color, and drink from form values
@@ -83,7 +81,6 @@ function Preferences(props) {
     const selectedColor = formik.values.color || "N/A"; // default to "N/A" if not selected
     const selectedDrink = formik.values.drink || "N/A"; // default to "N/A" if not selected
 
-    console.log([selectedSong, selectedColor, selectedDrink])
 
     await contract.methods
       .sendRequest([selectedSong, selectedColor, selectedDrink])
@@ -94,12 +91,18 @@ function Preferences(props) {
   }
 
   return (
-    <Box sx={{ maxWidth: 400, margin: "0 auto", padding: 2 }}>
-      <Typography variant="h5" gutterBottom align="center">
+    <Box className="custom-container">
+      {/* Add the image */}
+      <img src={removedBgImage} alt="Background" className="top-right-image" />
+      <img src={removedright} alt="Background" className="top-left-image" />
+      <img src={boxes} alt="Bottom Image" className="box-image" />
+      <img src={judebox} alt="Bottom Image" className="judeleft-image" />
+      <img src={judebox} alt="Bottom Image" className="juderight-image" />
+      <img src={vibebox} alt="Bottom Image" className="vibebox-image" />
+      <Typography variant="h5" className="custom-heading" gutterBottom>
         Choose a Song, Color, and Drink
       </Typography>
       <form onSubmit={formik.handleSubmit}>
-        {/* Song Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="song-label">Song (0.0005 ETH)</InputLabel>
           <Select
@@ -115,11 +118,10 @@ function Preferences(props) {
             </MenuItem>
             <MenuItem value="Blinding Lights">Blinding Lights</MenuItem>
             <MenuItem value="Formula1">Formula1</MenuItem>
-            <MenuItem value="song3">Skyfall</MenuItem>
+            <MenuItem value="Skyfall">Skyfall</MenuItem>
           </Select>
         </FormControl>
 
-        {/* Color Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="color-label">Color (0.0002 ETH)</InputLabel>
           <Select
@@ -139,7 +141,6 @@ function Preferences(props) {
           </Select>
         </FormControl>
 
-        {/* Drink Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="drink-label">Drink (0.001 ETH)</InputLabel>
           <Select
@@ -159,14 +160,12 @@ function Preferences(props) {
           </Select>
         </FormControl>
 
-        {/* Display total price */}
-        <Typography variant="h6" gutterBottom align="center">
+        <Typography variant="h6" className="custom-highlight" gutterBottom>
           Total Price: {calculateTotal()} ETH
         </Typography>
 
-        {/* Submit button */}
         <Box display="flex" justifyContent="center" mt={2}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" className="custom-button" type="submit">
             Transfer
           </Button>
         </Box>
