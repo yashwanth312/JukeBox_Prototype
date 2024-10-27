@@ -96,12 +96,12 @@ function Preferences(props) {
   return (
     <Box sx={{ maxWidth: 400, margin: "0 auto", padding: 2 }}>
       <Typography variant="h5" gutterBottom align="center">
-        Choose a Song, Color, and Drink
+        Choose a Theme
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         {/* Song Dropdown */}
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="song-label">Song (0.0005 ETH)</InputLabel>
+          <InputLabel id="song-label">Theme</InputLabel>
           <Select
             labelId="song-label"
             id="song"
@@ -113,49 +113,9 @@ function Preferences(props) {
             <MenuItem value="">
               <em>Select a song</em>
             </MenuItem>
-            <MenuItem value="Blinding Lights">Blinding Lights</MenuItem>
-            <MenuItem value="Formula1">Formula1</MenuItem>
-            <MenuItem value="song3">Skyfall</MenuItem>
-          </Select>
-        </FormControl>
-
-        {/* Color Dropdown */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="color-label">Color (0.0002 ETH)</InputLabel>
-          <Select
-            labelId="color-label"
-            id="color"
-            name="color"
-            value={formik.values.color}
-            onChange={formik.handleChange}
-            label="Color (0.0002 ETH)"
-          >
-            <MenuItem value="">
-              <em>Select a color</em>
-            </MenuItem>
-            <MenuItem value="red">Red</MenuItem>
-            <MenuItem value="green">Green</MenuItem>
-            <MenuItem value="blue">Blue</MenuItem>
-          </Select>
-        </FormControl>
-
-        {/* Drink Dropdown */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="drink-label">Drink (0.001 ETH)</InputLabel>
-          <Select
-            labelId="drink-label"
-            id="drink"
-            name="drink"
-            value={formik.values.drink}
-            onChange={formik.handleChange}
-            label="Drink (0.001 ETH)"
-          >
-            <MenuItem value="">
-              <em>Select a drink</em>
-            </MenuItem>
-            <MenuItem value="Coke">Coke</MenuItem>
-            <MenuItem value="Vodka">Vodka</MenuItem>
-            <MenuItem value="Gin">Gin</MenuItem>
+            <MenuItem value="pv">Purple Vibes</MenuItem>
+            <MenuItem value="il">Inferno of Love</MenuItem>
+            <MenuItem value="bw">Blue Waves</MenuItem>
           </Select>
         </FormControl>
 
