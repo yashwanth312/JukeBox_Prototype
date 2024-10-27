@@ -29,7 +29,7 @@ function Preferences(props) {
     drink: 0.001,
   };
 
-  const contractAddress = "0x10023E15676d80048Cb0Ae25117ff5C803551F75";
+  const contractAddress = "0xa9BDfb80C55Af3e52ac9659dCCBa1aa50e40899c";
 
   const calculateTotal = () => {
     return (
@@ -92,20 +92,17 @@ function Preferences(props) {
 
   return (
 
-    <Box sx={{ maxWidth: 400, margin: "0 auto", padding: 2 }}>
-      <Typography variant="h5" gutterBottom align="center">
-        Choose a Theme
 
     <Box className="custom-container">
       {/* Add the image */}
       <img src={removedBgImage} alt="Background" className="top-right-image" />
       <img src={removedright} alt="Background" className="top-left-image" />
-      <img src={boxes} alt="Bottom Image" className="box-image" />
+      {/* <img src={boxes} alt="Bottom Image" className="box-image" /> */}
       <img src={judebox} alt="Bottom Image" className="judeleft-image" />
       <img src={judebox} alt="Bottom Image" className="juderight-image" />
       <img src={vibebox} alt="Bottom Image" className="vibebox-image" />
       <Typography variant="h5" className="custom-heading" gutterBottom>
-        Choose a Song, Color, and Drink
+        Choose a Theme
 
       </Typography>
       <form onSubmit={formik.handleSubmit}>
@@ -119,9 +116,6 @@ function Preferences(props) {
             onChange={formik.handleChange}
             label="Song (0.0005 ETH)"
           >
-            <MenuItem value="">
-              <em>Select a song</em>
-            </MenuItem>
 
             <MenuItem value="pv">Purple Vibes</MenuItem>
             <MenuItem value="il">Inferno of Love</MenuItem>

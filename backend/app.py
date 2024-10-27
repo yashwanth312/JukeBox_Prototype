@@ -9,17 +9,14 @@ app = Flask(__name__)
 
 def MusicPlayer(song, url) :
     pygame.mixer.init()
-    if song == "bw" : 
-        song_path = "./Music/BW.mp3"
-    if song == "il":
-        song_path = "./Music/IL.mp3"
-    if song == "pv":
-        song_path = "./Music/PV.mp3"
-
     requests.get(url)
-    pygame.mixer.music.load(song_path)
+    pygame.mixer.music.load(song)
     pygame.mixer.music.play()
-    time.sleep(30)
+
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)
+
+    print("Lights Off")
     requests.get(url)
 
 
@@ -31,16 +28,19 @@ def success():
 
     response_data = []
 
-    if s_value == "bw":
-        external_url = "http://172.28.140.131?m=1&o=1"
-    if s_value == "il":
+    if s_value == "sb":
         external_url = "http://172.28.140.132?m=1&o=1"
-    if s_value == "pv":
+        song_path = "./Music/SB.mp3"
+    if s_value == "il":
+        external_url = "http://172.28.140.131?m=1&o=1"
+        song_path = "./Music/IL.mp3"
+    if s_value == "bw":
         external_url = "http://172.28.140.15?m=1&o=1"
+        song_path = "./Music/PV.mp3"
 
 
     if s_value : 
-        MusicPlayer(s_value, external_url)
+        MusicPlayer(song_path, external_url)
         response_data.append("Processed")
 
     # song_path = "./Music/bl.mp3"
