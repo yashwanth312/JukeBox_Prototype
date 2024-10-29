@@ -40,7 +40,7 @@ With VibeBox, transform any environment into an interactive, user-driven experie
    - [Smart Contract with Chainlink Functions](#smart-contract-with-chainlink-functions)
    - [Frontend Setup and Usage](#frontend-setup-and-usage)
    - [Backend Setup and Usage](#backend-setup-and-usage)
-4. [License](#license)
+3. [Video Demostration](#🎥-video-demonstration)
 
 ---
 
@@ -107,4 +107,11 @@ To set up and run the backend:
    ```bash
    pip install -r requirements.txt
    python app.py
+
+## 🎥 Video Demonstration
+
+For a detailed walkthrough of the VibeBox application and its features, check out the video demonstration here: [Watch the Video](https://www.youtube.com/playlist?list=PLUwddwXeIR_8bErGlj_DRcd5fhR_3idPL) 
+
+In this video, you'll see how VibeBox integrates music and lighting controls seamlessly, showcasing the user experience and the underlying technology that powers this innovative application.
+
 

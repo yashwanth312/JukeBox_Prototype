@@ -105,10 +105,6 @@ function Preferences(props) {
       <img src={judebox} alt="Bottom Image" className="judeleft-image" />
       <img src={judebox} alt="Bottom Image" className="juderight-image" />
       <img src={vibebox} alt="Bottom Image" className="vibebox-image" />
-      <Typography variant="h5" className="custom-heading" gutterBottom>
-        Choose a Song, Color, and Drink
-
-      </Typography>
       <form onSubmit={formik.handleSubmit}>
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel id="song-label">Theme</InputLabel>
