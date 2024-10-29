@@ -95,6 +95,7 @@ function Preferences(props) {
     <Box sx={{ maxWidth: 400, margin: "0 auto", padding: 2 }}>
       <Typography variant="h5" gutterBottom align="center">
         Choose a Theme
+      </Typography>
 
     <Box className="custom-container">
       {/* Add the image */}
@@ -142,6 +143,7 @@ function Preferences(props) {
           </Button>
         </Box>
       </form>
+    </Box>
     </Box>
   );
 }
