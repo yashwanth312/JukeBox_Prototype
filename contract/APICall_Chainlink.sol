@@ -39,7 +39,7 @@ contract GettingStartedFunctionsConsumer is FunctionsClient{
     // Check to get the router address for your supported network https://docs.chain.link/chainlink-functions/supported-networks
     address router = 0xf9B8fc078197181C841c296C876945aaa425B278;
 
-    address recepient = 0x14ba14600a148f8A1bCACD68210af6dB888B671e;
+    address recepient = {};
 
     // JavaScript source code
     // Fetch character name from the Star Wars API.
